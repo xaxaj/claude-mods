@@ -1,5 +1,20 @@
 {
   "name": "claude-mods",
-  "owner": { "name": "Cloudix" },
-  "plugins": [{ "name": "banniere-nuit", "source": "./" }]
+  "owner": {
+    "name": "Cloudix"
+  },
+  "plugins": [
+    {
+      "name": "banniere-nuit",
+      "source": "./"
+    },
+    {
+      "name": "ponytail",
+      "description": "Mode développeur minimaliste (de Dietrich Gebert), installé avec la bannière",
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  ]
 }
