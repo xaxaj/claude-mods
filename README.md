@@ -7,7 +7,7 @@ Au-dessus de la zone de saisie : l'heure de Paris et une phrase de motivation, e
 
 ## Installation
 
-L'installation ajoute aussi [Ponytail](https://github.com/DietrichGebert/ponytail) (mode développeur minimaliste), dont la bannière se place au-dessus.
+La marketplace propose aussi [Ponytail](https://github.com/DietrichGebert/ponytail) (mode développeur minimaliste) : `/plugin install ponytail@claude-mods`.
 
 À l'invite d'une session Claude Code :
 
