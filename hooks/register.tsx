@@ -14,7 +14,7 @@ export const paris = (ms: number) => {
 // Étoiles fixes : la scène ne change pas d'un rendu à l'autre.
 const STARS = [[40,18,1.2],[95,52,.8],[150,24,1],[210,64,.7],[265,14,1.1],[330,40,.8],[395,20,1.3],[450,58,.7],[520,30,1],[585,12,.8],[640,46,1.1],[700,22,.7],[760,56,.9],[130,72,.6],[480,8,.9],[610,70,.6]]
 
-const PHRASES = [
+const PHRASES_FR = [
   'Chaque ligne de code te rapproche du but.',
   'Petit pas aujourd\'hui, grand projet demain.',
   'La constance bat le talent.',
@@ -29,8 +29,26 @@ const PHRASES = [
   'Crois en ce que tu bâtis.',
 ]
 
+const PHRASES_EN = [
+  'Every line of code gets you closer.',
+  'Small step today, big project tomorrow.',
+  'Consistency beats talent.',
+  'You are building something that matters.',
+  'A fixed bug is a victory.',
+  'Keep going, even slowly.',
+  'The best time is now.',
+  'Do it well, then do it better.',
+  'Your persistence will make the difference.',
+  'Focus on one thing at a time.',
+  'Great things take time.',
+  'Believe in what you build.',
+]
+
 // Change toutes les 15 minutes, la même phrase pour tout le quart d'heure.
-export const phrase = (ms: number) => PHRASES[Math.floor(ms / 900_000) % PHRASES.length]
+export const phrase = (ms: number, lang: string = 'fr') => {
+  const list = lang === 'en' ? PHRASES_EN : PHRASES_FR
+  return list[Math.floor(ms / 900_000) % list.length]
+}
 
 export const nightSvg = (time: string, quote: string) => `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="90" viewBox="0 0 800 90" preserveAspectRatio="xMinYMid slice" style="display:block">
 <defs>
@@ -78,7 +96,8 @@ ${Array.from({ length: 12 }, (_, i) => `<line x1="0" y1="-27" x2="0" y2="-35" tr
 
 export const isNight = (hour: number) => hour >= 21 || hour < 7
 
-export const register: Register = on => {
+export const register: Register = (on, options) => {
+  const lang = options.langue === 'en' ? 'en' : 'fr'
   on('session.start', async ($, e, next) => {
     const tick = async () => { const ms = await $.clock.now(); await update($, now, () => ms) }
     await tick()
@@ -94,8 +113,8 @@ export const register: Register = on => {
     const below = await next(e)
     const ui = $.ui.resolve(e)
     const banner = e.surface === 'terminal'
-      ? <ui.Text color="cyan">{isNight(hour) ? '🌙' : '☀️'} {text} · {phrase(ms)}</ui.Text>
-      : <ui.Svg isInteractive height={90} source={(isNight(hour) ? nightSvg : daySvg)(text, phrase(ms))} alt={`${text}, ${phrase(ms)}`} />
+      ? <ui.Text color="cyan">{isNight(hour) ? '🌙' : '☀️'} {text} · {phrase(ms, lang)}</ui.Text>
+      : <ui.Svg isInteractive height={90} source={(isNight(hour) ? nightSvg : daySvg)(text, phrase(ms, lang))} alt={`${text}, ${phrase(ms, lang)}`} />
     return <ui.Box flexDirection="column">{banner}{below}</ui.Box>
   })
 }

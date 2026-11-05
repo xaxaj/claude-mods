@@ -1,1 +1,18 @@
-{ "name": "banniere-nuit", "version": "0.1.0", "description": "Bannière jour et nuit animée avec l'heure de Paris et une phrase de motivation", "types": "./types/index.d.ts" }
+{
+  "name": "banniere-nuit",
+  "version": "0.2.0",
+  "description": "Bannière jour et nuit animée avec l'heure et une phrase de motivation (français ou anglais)",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "langue": {
+      "type": "string",
+      "title": "Langue / Language",
+      "description": "Langue des phrases de motivation (fr : français, en : English)",
+      "default": "fr",
+      "options": [
+        "fr",
+        "en"
+      ]
+    }
+  }
+}

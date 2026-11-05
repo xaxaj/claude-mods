@@ -24,3 +24,8 @@ test('phrase stable 15 minutes puis change', () => {
 test('image de jour', () => {
   expect(daySvg('12:00', 'Avance.').includes('#ffd23f')).toBe(true)
 })
+
+test('phrases en anglais', () => {
+  const t = Date.UTC(2026, 10, 5, 23, 30)
+  expect(phrase(t, 'en')).not.toBe(phrase(t, 'fr'))
+})
