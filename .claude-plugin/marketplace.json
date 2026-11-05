@@ -1,0 +1,5 @@
+{
+  "name": "claude-mods",
+  "owner": { "name": "Cloudix" },
+  "plugins": [{ "name": "banniere-nuit", "source": "./" }]
+}

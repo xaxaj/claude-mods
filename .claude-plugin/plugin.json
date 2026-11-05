@@ -1,0 +1,1 @@
+{ "name": "banniere-nuit", "version": "0.1.0", "description": "Bannière jour et nuit animée avec l'heure de Paris et une phrase de motivation", "types": "./types/index.d.ts" }
