@@ -8,7 +8,9 @@ fi
 if claude plugin marketplace list 2>&1 | grep -q claude-mods; then
   claude plugin marketplace update claude-mods >/dev/null 2>&1 || true
 else
-  claude plugin marketplace add xaxaj/claude-mods || exit 1
+  # Réglages qui gardent déjà une adresse pour claude-mods : Claude Code exige cette même adresse
+  source=$(python3 -c "import json,os;s=json.load(open(os.path.expanduser('~/.claude/settings.json'))).get('extraKnownMarketplaces',{}).get('claude-mods',{}).get('source',{});print(s.get('repo') or s.get('url') or s.get('path') or '')" 2>/dev/null)
+  claude plugin marketplace add "${source:-xaxaj/claude-mods}" || exit 1
 fi
 claude plugin install banniere-nuit@claude-mods
 claude plugin install ponytail@claude-mods
