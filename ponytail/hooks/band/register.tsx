@@ -353,7 +353,7 @@ export const register: Register = (on, options) => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey || (await bandHidden($))) return next(e)
-    // Other mods share this slot: draw theirs below ours instead of replacing it.
+    // Other mods share this slot: draw theirs above ours (Cloudix: the day/night banner stays on top) instead of replacing it.
     // next(e) rejects only when nothing answers beneath (the test harness): the band still draws.
     const below = await next(e).catch(() => undefined)
 
@@ -383,7 +383,7 @@ export const register: Register = (on, options) => {
     const { Box, Text, Button } = $.ui.resolve(e)
     // bodyColumns counts terminal cells; a graphical surface draws Buttons wider than their cells, so a row sized to it wraps there.
     const width = e.surface === 'terminal' ? e.props.bodyColumns : undefined
-    const stack =(mine: NonNullable<typeof below>) => (below ? <Box flexDirection="column">{mine}{below}</Box> : mine)
+    const stack =(mine: NonNullable<typeof below>) => (below ? <Box flexDirection="column">{below}{mine}</Box> : mine)
 
     const testsText =
       b.tests.state === 'pass'

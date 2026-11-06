@@ -41,4 +41,4 @@ Mac, Linux, SSH : `curl -fsSL https://raw.githubusercontent.com/xaxaj/claude-mod
 
 ## Ponytail
 
-Le dossier `ponytail/` est une copie de [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (commit 96608e0), sous licence MIT (voir `ponytail/LICENSE`).
+Le dossier `ponytail/` est une copie de [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (commit 96608e0), sous licence MIT, avec un seul changement : les bandeaux des autres extensions sont placés au-dessus du sien (voir `ponytail/LICENSE`).
