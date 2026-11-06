@@ -154,11 +154,12 @@ export const register: Register = (on, options) => {
     }
     const { hour, text } = paris(ms)
     // Les bandeaux des autres extensions (ponytail) restent affichés sous la bannière.
-    const below = await next(e)
+    // next(e) échoue quand rien n'est dessiné sous la bannière (elle est la dernière) : elle s'affiche alors seule
+    const below = await next(e).catch(() => undefined)
     const ui = $.ui.resolve(e)
     const banner = e.surface === 'terminal'
       ? <ui.Text color="cyan">{isNight(hour) ? '🌙' : '☀️'} {text} · {phrase(ms, lang)}</ui.Text>
       : <ui.Svg isInteractive height={90} source={(isNight(hour) ? nightSvg : daySvg)(text, phrase(ms, lang))} alt={`${text}, ${phrase(ms, lang)}`} />
-    return <ui.Box flexDirection="column">{banner}{below}</ui.Box>
+    return below ? <ui.Box flexDirection="column">{banner}{below}</ui.Box> : banner
   })
 }
