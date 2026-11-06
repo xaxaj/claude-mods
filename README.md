@@ -5,20 +5,34 @@ Au-dessus de la zone de saisie : l'heure de Paris et une phrase de motivation, e
 - De 7 h à 21 h : ciel bleu, soleil qui rayonne, nuages qui passent.
 - De 21 h à 7 h : ciel étoilé qui scintille, étoile filante et lune néon.
 
-## Installation
+## Installation en une commande
 
-La marketplace propose aussi [Ponytail](https://github.com/DietrichGebert/ponytail) (mode développeur minimaliste) : `/plugin install ponytail@claude-mods`.
+Installe la bannière et [Ponytail](https://github.com/DietrichGebert/ponytail).
+
+Windows (PowerShell) :
+
+```
+irm https://raw.githubusercontent.com/xaxaj/claude-mods/main/install.ps1 | iex
+```
+
+Mac, Linux, SSH :
+
+```
+curl -fsSL https://raw.githubusercontent.com/xaxaj/claude-mods/main/install.sh | sh
+```
+
+La langue des phrases (`fr` ou `en`) se change ensuite dans `/config`.
+
+## Désinstallation
+
+Windows : `irm https://raw.githubusercontent.com/xaxaj/claude-mods/main/uninstall.ps1 | iex`
+
+Mac, Linux, SSH : `curl -fsSL https://raw.githubusercontent.com/xaxaj/claude-mods/main/uninstall.sh | sh`
+
+## Installation de la bannière seule
 
 À l'invite d'une session Claude Code :
 
 ```
 /plugin install banniere-nuit --marketplace xaxaj/claude-mods
-```
-
-Répondez `y` pour ajouter la marketplace, choisissez la portée (utilisateur pour l'avoir partout), puis la langue des phrases : `fr` (français) ou `en` (English). Elle se change ensuite dans `/config`.
-
-Depuis un terminal :
-
-```
-claude plugin install banniere-nuit --marketplace xaxaj/claude-mods
 ```
