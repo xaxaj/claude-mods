@@ -102,16 +102,25 @@ export const isNight = (hour: number) => hour >= 21 || hour < 7
 
 export const register: Register = (on, options) => {
   const lang = options.langue === 'en' ? 'en' : 'fr'
-  on('session.start', async ($, e, next) => {
+  // Horloge démarrée une seule fois : à l'ouverture de la session, ou au premier affichage après un /reload-plugins
+  let ticking = false
+  const start = async ($: any) => { // le $ de n'importe quel crochet
+    if (ticking) return
+    ticking = true
     const tick = async () => { const ms = await $.clock.now(); await update($, now, () => ms) }
     await tick()
     $.clock.every(30_000, tick)
+  }
+
+  on('session.start', async ($, e, next) => {
+    await start($)
     return next(e)
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    const ms = await read($, now)
-    if (!ms || e.props.hasSurvey) return next(e)
+    if (e.props.hasSurvey) return next(e)
+    await start($)
+    const ms = (await read($, now)) || (await $.clock.now())
     const { hour, text } = paris(ms)
     // Les bandeaux des autres extensions (ponytail) restent affichés sous la bannière.
     const below = await next(e)
