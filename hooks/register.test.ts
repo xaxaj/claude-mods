@@ -1,5 +1,5 @@
 import { test, expect } from 'claude-code/testing'
-import { paris, isNight, nightSvg, daySvg, phrase } from './register'
+import { paris, isNight, nightSvg, daySvg, phrase, parisOffsetHours } from './register'
 
 test('heure de Paris et nuit', () => {
   expect(paris(Date.UTC(2026, 10, 5, 23, 31)).text).toBe('00:31')
@@ -28,4 +28,11 @@ test('image de jour', () => {
 test('phrases en anglais', () => {
   const t = Date.UTC(2026, 10, 5, 23, 30)
   expect(phrase(t, 'en')).not.toBe(phrase(t, 'fr'))
+})
+
+test('décalage de Paris sans fuseaux', () => {
+  expect(parisOffsetHours(Date.UTC(2026, 10, 6, 0, 0))).toBe(1)
+  expect(parisOffsetHours(Date.UTC(2026, 6, 1, 12, 0))).toBe(2)
+  expect(parisOffsetHours(Date.UTC(2026, 2, 29, 0, 59))).toBe(1)
+  expect(parisOffsetHours(Date.UTC(2026, 2, 29, 1, 0))).toBe(2)
 })

@@ -3,11 +3,29 @@ import type { Register } from 'claude-code'
 
 const now = atom({ plugin: 'banniere-nuit', key: 'now' } as const, 0)
 
-// Heure de Paris : le serveur est en UTC.
+// Heure de Paris. Sans données de fuseaux (certains serveurs), calcul direct : UTC+1, UTC+2 du dernier dimanche
+// de mars au dernier dimanche d'octobre (changement à 1 h UTC), comme en France.
+const lastSundayUtc = (year: number, month: number) => {
+  const d = new Date(Date.UTC(year, month + 1, 0, 1))
+  return d.getTime() - d.getUTCDay() * 86_400_000
+}
+export const parisOffsetHours = (ms: number) => {
+  const y = new Date(ms).getUTCFullYear()
+  return ms >= lastSundayUtc(y, 2) && ms < lastSundayUtc(y, 9) ? 2 : 1
+}
 export const paris = (ms: number) => {
-  const p = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(ms)
-  const hour = Number(p.find(x => x.type === 'hour')?.value)
-  const minute = p.find(x => x.type === 'minute')?.value ?? '00'
+  let hour: number
+  let minute: string
+  try {
+    const p = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(ms)
+    hour = Number(p.find(x => x.type === 'hour')?.value)
+    minute = p.find(x => x.type === 'minute')?.value ?? '00'
+    if (!Number.isFinite(hour)) throw new Error('heure illisible')
+  } catch {
+    const d = new Date(ms + parisOffsetHours(ms) * 3_600_000)
+    hour = d.getUTCHours()
+    minute = String(d.getUTCMinutes()).padStart(2, '0')
+  }
   return { hour, text: `${String(hour).padStart(2, '0')}:${minute}` }
 }
 
