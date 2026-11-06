@@ -118,23 +118,23 @@ ${Array.from({ length: 12 }, (_, i) => `<line x1="0" y1="-27" x2="0" y2="-35" tr
 
 export const isNight = (hour: number) => hour >= 21 || hour < 7
 
+// Horloge démarrée une seule fois : à l'ouverture de la session, au premier message, ou juste après le premier
+// affichage (après un /reload-plugins). Jamais pendant le dessin : un crochet de dessin n'a pas le droit d'écrire.
+let ticking = false
+async function start($: any) {
+  if (ticking) return
+  ticking = true
+  const tick = async () => { const ms = await $.clock.now(); await update($, now, () => ms) }
+  try {
+    await tick()
+    $.clock.every(30_000, tick)
+  } catch {
+    ticking = false // refusé ici : un prochain crochet réessaiera
+  }
+}
+
 export const register: Register = (on, options) => {
   const lang = options.langue === 'en' ? 'en' : 'fr'
-  // Horloge démarrée une seule fois : à l'ouverture de la session, ou juste après le premier affichage
-  // (après un /reload-plugins). Jamais pendant le dessin : un crochet de dessin n'a pas le droit d'écrire.
-  let ticking = false
-  const start = async ($: any) => { // le $ d'un crochet qui a le droit d'écrire
-    if (ticking) return
-    ticking = true
-    const tick = async () => { const ms = await $.clock.now(); await update($, now, () => ms) }
-    try {
-      await tick()
-      $.clock.every(30_000, tick)
-    } catch {
-      ticking = false // refusé ici : un prochain crochet (message, ouverture) réessaiera
-    }
-  }
-
   on('session.start', async ($, e, next) => {
     await start($)
     return next(e)
