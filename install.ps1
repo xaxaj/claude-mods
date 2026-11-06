@@ -6,7 +6,6 @@ if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
 }
 # Une marketplace déjà ajoutée n'est pas une erreur
 claude plugin marketplace add xaxaj/claude-mods 2>$null
-claude plugin marketplace add DietrichGebert/ponytail 2>$null
 claude plugin install banniere-nuit@claude-mods
-claude plugin install ponytail@ponytail
+claude plugin install ponytail@claude-mods
 Write-Host "Installé. Ouvrez une nouvelle session Claude Code pour voir la bannière." -ForegroundColor Green

@@ -7,6 +7,11 @@
     {
       "name": "banniere-nuit",
       "source": "./"
+    },
+    {
+      "name": "ponytail",
+      "description": "Mode développeur minimaliste, copie de DietrichGebert/ponytail (licence MIT)",
+      "source": "./ponytail"
     }
   ]
 }

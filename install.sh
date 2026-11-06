@@ -6,7 +6,6 @@ if ! command -v claude >/dev/null 2>&1; then
   exit 1
 fi
 claude plugin marketplace add xaxaj/claude-mods || true
-claude plugin marketplace add DietrichGebert/ponytail || true
 claude plugin install banniere-nuit@claude-mods
-claude plugin install ponytail@ponytail
+claude plugin install ponytail@claude-mods
 echo "Installé. Ouvrez une nouvelle session Claude Code pour voir la bannière."

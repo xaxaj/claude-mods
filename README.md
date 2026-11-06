@@ -9,6 +9,8 @@ Au-dessus de la zone de saisie : l'heure de Paris et une phrase de motivation, e
 
 Installe la bannière et [Ponytail](https://github.com/DietrichGebert/ponytail).
 
+Depuis l'application : Paramètres → Plugins → Ajouter une marketplace `xaxaj/claude-mods`, puis « Ajouter à cet ordinateur » sur Banniere nuit et sur Ponytail.
+
 Windows (PowerShell) :
 
 ```
@@ -36,3 +38,7 @@ Mac, Linux, SSH : `curl -fsSL https://raw.githubusercontent.com/xaxaj/claude-mod
 ```
 /plugin install banniere-nuit --marketplace xaxaj/claude-mods
 ```
+
+## Ponytail
+
+Le dossier `ponytail/` est une copie de [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (commit 96608e0), sous licence MIT (voir `ponytail/LICENSE`).
