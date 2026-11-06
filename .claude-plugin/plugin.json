@@ -1,6 +1,6 @@
 {
   "name": "banniere-nuit",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Bannière jour et nuit animée avec l'heure et une phrase de motivation (français ou anglais)",
   "types": "./types/index.d.ts",
   "userConfig": {
@@ -14,5 +14,6 @@
         "en"
       ]
     }
-  }
+  },
+  "icon": "https://raw.githubusercontent.com/xaxaj/claude-mods/main/icon.png"
 }
