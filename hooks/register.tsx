@@ -120,14 +120,19 @@ export const isNight = (hour: number) => hour >= 21 || hour < 7
 
 export const register: Register = (on, options) => {
   const lang = options.langue === 'en' ? 'en' : 'fr'
-  // Horloge démarrée une seule fois : à l'ouverture de la session, ou au premier affichage après un /reload-plugins
+  // Horloge démarrée une seule fois : à l'ouverture de la session, ou juste après le premier affichage
+  // (après un /reload-plugins). Jamais pendant le dessin : un crochet de dessin n'a pas le droit d'écrire.
   let ticking = false
-  const start = async ($: any) => { // le $ de n'importe quel crochet
+  const start = async ($: any) => { // le $ d'un crochet qui a le droit d'écrire
     if (ticking) return
     ticking = true
     const tick = async () => { const ms = await $.clock.now(); await update($, now, () => ms) }
-    await tick()
-    $.clock.every(30_000, tick)
+    try {
+      await tick()
+      $.clock.every(30_000, tick)
+    } catch {
+      ticking = false // refusé ici : un prochain crochet (message, ouverture) réessaiera
+    }
   }
 
   on('session.start', async ($, e, next) => {
@@ -135,10 +140,18 @@ export const register: Register = (on, options) => {
     return next(e)
   })
 
+  // Filet de sécurité : le premier message envoyé démarre aussi l'horloge
+  on('prompt.submit', async ($, e, next) => {
+    await start($)
+    return next(e)
+  })
+
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey) return next(e)
-    await start($)
     const ms = (await read($, now)) || (await $.clock.now())
+    if (!ticking) {
+      try { $.clock.after(1, () => { void start($) }) } catch { /* l'heure reste celle lue ici, rafraîchie au prochain affichage */ }
+    }
     const { hour, text } = paris(ms)
     // Les bandeaux des autres extensions (ponytail) restent affichés sous la bannière.
     const below = await next(e)
