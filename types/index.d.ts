@@ -1,6 +1,7 @@
+export type Now = number
+
 declare module 'claude-code' {
   interface PluginState {
-    'banniere-nuit': { now: number }
+    'banniere-nuit': { now: Now }
   }
 }
-export {}
